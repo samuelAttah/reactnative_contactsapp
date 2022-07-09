@@ -10,7 +10,7 @@ const DrawerNavigator = () => {
   return (
     <Drawer.Navigator drawerContent={props => <SideMenu {...props} />}>
       <Drawer.Screen
-        name="Home"
+        name="Contacts"
         component={HomeNavigator}
         options={{
           drawerIcon: ({size, focused}) => (

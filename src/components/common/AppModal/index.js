@@ -29,7 +29,7 @@ const AppModal = ({
                 }}>
                 <Icon name="close" size={27} />
               </TouchableOpacity>
-              <Text style={styles.title}>{title || 'RNContacts'}</Text>
+              <Text style={styles.title}>{title || 'ContactsApp'}</Text>
 
               <View />
               <View />

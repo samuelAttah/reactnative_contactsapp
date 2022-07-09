@@ -1,5 +1,5 @@
 export default {
   loading: false,
-  data: {},
-  fetchError: '',
+  data: [],
+  fetchError: null,
 };

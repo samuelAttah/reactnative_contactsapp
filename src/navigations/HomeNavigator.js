@@ -1,6 +1,5 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import {Button, Alert} from 'react-native';
 import Contacts from '../screens/Contacts';
 import ContactDetails from '../screens/ContactDetails';
 import Settings from '../screens/Settings';
@@ -10,25 +9,26 @@ const HomeStack = createNativeStackNavigator();
 const HomeNavigator = () => {
   return (
     <HomeStack.Navigator
-      initialRouteName="Contacts"
+      initialRouteName="Home"
       screenOptions={{
         headerStyle: {backgroundColor: '#f4511e'},
         headerTintColor: 'white',
         headerTitleStyle: {fontWeight: 'bold'},
+        headerShown: false,
       }}>
       <HomeStack.Screen
-        name="Contacts"
+        name="Home"
         component={Contacts}
-        options={{
-          title: 'My Home',
-          headerRight: () => (
-            <Button
-              onPress={() => Alert.alert('This is a button!')}
-              title="Info"
-              color="blue"
-            />
-          ),
-        }}
+        // options={{
+        //   title: 'My Home',
+        //   headerRight: () => (
+        //     <Button
+        //       onPress={() => Alert.alert('This is a button!')}
+        //       title="Info"
+        //       color="blue"
+        //     />
+        //   ),
+        // }}
       />
       <HomeStack.Screen
         name="Details"
@@ -37,7 +37,11 @@ const HomeNavigator = () => {
           title: 'Details',
         }}
       />
-      <HomeStack.Screen name="Settings" component={Settings} />
+      <HomeStack.Screen
+        name="Settings"
+        component={Settings}
+        options={{headerShown: true}}
+      />
       <HomeStack.Screen name="Create" component={CreateContact} />
     </HomeStack.Navigator>
   );

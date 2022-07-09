@@ -12,6 +12,9 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  GET_CONTACTS_LOADING,
+  GET_CONTACTS_SUCCESS,
+  GET_CONTACTS_FAIL,
 } from '../constants/actionTypes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axiosInstance from '../helpers/axiosInstance';
@@ -88,6 +91,20 @@ const GlobalProvider = ({children}) => {
     authDispatch({type: LOGOUT});
   };
 
+  //CONTACT ACTIONS
+  //GETTING CONTACTS
+  const fetchContacts = async () => {
+    contactDispatch({type: GET_CONTACTS_LOADING});
+    try {
+      const response = await axiosInstance.get('contacts/');
+      contactDispatch({type: GET_CONTACTS_SUCCESS, payLoad: response.data});
+    } catch (error) {
+      contactDispatch({
+        type: GET_CONTACTS_FAIL,
+        payLoad: error.response ? error.response?.data : error.message,
+      });
+    }
+  };
   return (
     <GlobalContext.Provider
       value={{
@@ -98,6 +115,7 @@ const GlobalProvider = ({children}) => {
         contactDispatch,
         doLogin,
         doLogout,
+        fetchContacts,
       }}>
       {children}
     </GlobalContext.Provider>
