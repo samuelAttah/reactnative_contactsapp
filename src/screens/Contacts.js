@@ -1,10 +1,12 @@
 // import {useFocusEffect} from '@react-navigation/native';
+import {useRoute} from '@react-navigation/native';
 import React, {useContext, useEffect, useState, useRef} from 'react';
 import ContactComponent from '../components/ContactComponent';
 import {GlobalContext} from '../context/Provider';
 // import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Contacts = ({navigation}) => {
+  const {params} = useRoute();
   const effectRan = useRef(false);
   const [modalVisible, setModalVisible] = useState(false);
   const {
@@ -13,14 +15,15 @@ const Contacts = ({navigation}) => {
   } = useContext(GlobalContext);
 
   useEffect(() => {
-    if (effectRan.current === false) {
-      fetchContacts();
+    fetchContacts();
+    // if (effectRan.current === false) {
+    //   fetchContacts();
 
-      return () => {
-        effectRan.current = true;
-      };
-    }
-  }, [fetchContacts]);
+    //   return () => {
+    //     effectRan.current = true;
+    //   };
+    // }
+  }, [params?.data]);
 
   return (
     <>

@@ -11,6 +11,7 @@ import React from 'react';
 import AppModal from '../common/AppModal';
 import colors from '../../assets/theme/colors';
 import Icon from 'react-native-vector-icons/Entypo';
+import {useNavigation} from '@react-navigation/native';
 
 const ListEmptyComponent = () => (
   <View style={styles.emptyComponent}>
@@ -28,7 +29,7 @@ const renderItem = ({item}) => {
           <Image style={styles.profileImage} source={{uri: contact_picture}} />
         ) : (
           <View style={styles.noImage}>
-            <Icon name="user" />
+            <Icon name="user" size={32} />
           </View>
         )}
 
@@ -48,36 +49,50 @@ const renderItem = ({item}) => {
   );
 };
 
-const ContactComponent = ({modalVisible, setModalVisible, data, loading}) => {
+const ContactComponent = ({
+  modalVisible,
+  setModalVisible,
+  data,
+  loading,
+  fetchError,
+}) => {
+  const navigation = useNavigation();
   return (
-    <View style={{backgroundColor: colors.white}}>
-      <AppModal
-        setModalVisible={setModalVisible}
-        modalVisible={modalVisible}
-        modalFooter={<></>}
-        modalBody={<View />}
-        title="my profile"
-      />
-      {loading && (
-        <View style={styles.emptyComponent}>
-          <ActivityIndicator size="large" color={colors.primary} />
-        </View>
-      )}
-      {!loading && (
-        <View style={[{paddingVertical: 20}]}>
-          <FlatList
-            data={data}
-            ListEmptyComponent={!loading && ListEmptyComponent}
-            renderItem={renderItem}
-            keyExtractor={item => String(item.id)}
-            ListFooterComponent={<View style={{height: 100}} />}
-            ItemSeparatorComponent={() => (
-              <View style={{height: 0.3, backgroundColor: colors.grey}} />
-            )}
-          />
-        </View>
-      )}
-    </View>
+    <>
+      <View style={{backgroundColor: colors.white}}>
+        <AppModal
+          setModalVisible={setModalVisible}
+          modalVisible={modalVisible}
+          modalFooter={<></>}
+          modalBody={<View />}
+          title="my profile"
+        />
+        {loading && (
+          <View style={styles.emptyComponent}>
+            <ActivityIndicator size="large" color={colors.primary} />
+          </View>
+        )}
+        {!loading && (
+          <View style={[{paddingVertical: 20}]}>
+            <FlatList
+              data={data}
+              ListEmptyComponent={!loading && ListEmptyComponent}
+              renderItem={renderItem}
+              keyExtractor={item => String(item.id)}
+              ListFooterComponent={<View style={{height: 150}} />}
+              ItemSeparatorComponent={() => (
+                <View style={{height: 0.3, backgroundColor: colors.grey}} />
+              )}
+            />
+          </View>
+        )}
+      </View>
+      <TouchableOpacity
+        style={styles.floatingActionButton}
+        onPress={() => navigation.navigate('Create')}>
+        <Icon name="plus" color={colors.white} size={25} />
+      </TouchableOpacity>
+    </>
   );
 };
 
@@ -96,6 +111,8 @@ const styles = StyleSheet.create({
     height: 45,
     backgroundColor: colors.grey,
     borderRadius: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   item: {
     flexDirection: 'row',
@@ -111,11 +128,23 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 17,
+    marginRight: 10,
   },
   phoneNumber: {
     opacity: 0.6,
     fontSize: 14,
     paddingVertical: 5,
+  },
+  floatingActionButton: {
+    backgroundColor: 'red',
+    width: 55,
+    height: 55,
+    position: 'absolute',
+    bottom: 45,
+    right: 10,
+    borderRadius: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

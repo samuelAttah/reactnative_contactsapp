@@ -15,6 +15,9 @@ import {
   GET_CONTACTS_LOADING,
   GET_CONTACTS_SUCCESS,
   GET_CONTACTS_FAIL,
+  CREATE_CONTACTS_LOADING,
+  CREATE_CONTACTS_SUCCESS,
+  CREATE_CONTACTS_FAIL,
 } from '../constants/actionTypes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axiosInstance from '../helpers/axiosInstance';
@@ -92,7 +95,7 @@ const GlobalProvider = ({children}) => {
   };
 
   //CONTACT ACTIONS
-  //GETTING CONTACTS
+  //FETCH CONTACTS ACTIONS
   const fetchContacts = async () => {
     contactDispatch({type: GET_CONTACTS_LOADING});
     try {
@@ -102,6 +105,28 @@ const GlobalProvider = ({children}) => {
       contactDispatch({
         type: GET_CONTACTS_FAIL,
         payLoad: error.response ? error.response?.data : error.message,
+      });
+    }
+  };
+
+  //CREATE CONTACTS ACTIONS
+  const createContactAction = form => {
+    const requestPayLoad = {
+      country_code: form.phoneCode || '',
+      first_name: form.firstName || '',
+      last_name: form.lastName || '',
+      phone_number: form.phoneNumber || '',
+      contact_picture: form.contactPicture || null,
+      is_favorite: form.isFavorite || false,
+    };
+    contactDispatch({type: CREATE_CONTACTS_LOADING});
+    try {
+      const response = axiosInstance.post('/contacts/', requestPayLoad);
+      contactDispatch({type: CREATE_CONTACTS_SUCCESS, payLoad: response.data});
+    } catch (error) {
+      contactDispatch({
+        type: CREATE_CONTACTS_FAIL,
+        payLoad: error.response ? error.response.data : error.message,
       });
     }
   };
@@ -116,6 +141,7 @@ const GlobalProvider = ({children}) => {
         doLogin,
         doLogout,
         fetchContacts,
+        createContactAction,
       }}>
       {children}
     </GlobalContext.Provider>
