@@ -1,10 +1,12 @@
 import React, {useContext, useState} from 'react';
+import {useRef} from 'react';
 
 import CreateContactComponent from '../components/CreateContactComponent';
 import {GlobalContext} from '../context/Provider';
 
 const CreateContact = ({navigation}) => {
   const [form, setForm] = useState({});
+  const [localFile, setLocalFile] = useState(null);
 
   const {firstName, lastName, phoneNumber} = form;
   const {
@@ -14,6 +16,23 @@ const CreateContact = ({navigation}) => {
 
   const canSave = [firstName, lastName, phoneNumber].every(Boolean);
 
+  const sheetRef = useRef(null);
+  // openSheet,
+  const closeSheet = () => {
+    if (sheetRef.current) {
+      sheetRef.current.close();
+    }
+  };
+  const openSheet = () => {
+    if (sheetRef.current) {
+      sheetRef.current.open();
+    }
+  };
+  const onSelectImage = image => {
+    closeSheet(image);
+    setLocalFile(image);
+  };
+
   const onChangeText = ({name, value}) => {
     setForm({...form, [name]: value});
   };
@@ -22,10 +41,10 @@ const CreateContact = ({navigation}) => {
     setForm({...form, isFavorite: !form.isFavorite});
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     //do something
     try {
-      createContactAction(form);
+      await createContactAction(form);
       console.log('data', data);
       if (data) {
         navigation.navigate('Home', {data: data});
@@ -43,6 +62,12 @@ const CreateContact = ({navigation}) => {
       loading={loading}
       fetchError={fetchError}
       toggleValueChange={toggleValueChange}
+      navigation={navigation}
+      sheetRef={sheetRef}
+      closeSheet={closeSheet}
+      openSheet={openSheet}
+      onSelectImage={onSelectImage}
+      localFile={localFile}
     />
   );
 };

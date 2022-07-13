@@ -2,7 +2,7 @@ import React, {createContext, useReducer} from 'react';
 import authReducer from './reducers/authReducer';
 import authInitialState from './initialState/authState';
 import contactReducer from './reducers/contactReducer';
-import * as contactInitialState from './initialState/contactState';
+import contactInitialState from './initialState/contactState';
 import {
   CLEAR_AUTH_STATE,
   REGISTER_LOADING,
@@ -15,9 +15,9 @@ import {
   GET_CONTACTS_LOADING,
   GET_CONTACTS_SUCCESS,
   GET_CONTACTS_FAIL,
-  CREATE_CONTACTS_LOADING,
-  CREATE_CONTACTS_SUCCESS,
-  CREATE_CONTACTS_FAIL,
+  CREATE_CONTACT_LOADING,
+  CREATE_CONTACT_SUCCESS,
+  CREATE_CONTACT_FAIL,
 } from '../constants/actionTypes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axiosInstance from '../helpers/axiosInstance';
@@ -100,7 +100,9 @@ const GlobalProvider = ({children}) => {
     contactDispatch({type: GET_CONTACTS_LOADING});
     try {
       const response = await axiosInstance.get('contacts/');
-      contactDispatch({type: GET_CONTACTS_SUCCESS, payLoad: response.data});
+      const {data} = response;
+      const sortedList = data.sort((a, b) => b.id - a.id);
+      contactDispatch({type: GET_CONTACTS_SUCCESS, payLoad: sortedList});
     } catch (error) {
       contactDispatch({
         type: GET_CONTACTS_FAIL,
@@ -119,13 +121,13 @@ const GlobalProvider = ({children}) => {
       contact_picture: form.contactPicture || null,
       is_favorite: form.isFavorite || false,
     };
-    contactDispatch({type: CREATE_CONTACTS_LOADING});
+    contactDispatch({type: CREATE_CONTACT_LOADING});
     try {
       const response = axiosInstance.post('/contacts/', requestPayLoad);
-      contactDispatch({type: CREATE_CONTACTS_SUCCESS, payLoad: response.data});
+      contactDispatch({type: CREATE_CONTACT_SUCCESS, payLoad: response.data});
     } catch (error) {
       contactDispatch({
-        type: CREATE_CONTACTS_FAIL,
+        type: CREATE_CONTACT_FAIL,
         payLoad: error.response ? error.response.data : error.message,
       });
     }

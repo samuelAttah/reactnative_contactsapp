@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   Switch,
+  Image,
 } from 'react-native';
 import React from 'react';
 import Container from '../common/Container';
@@ -13,6 +14,7 @@ import Input from '../common/Input';
 import CountryPicker from 'react-native-country-picker-modal';
 import Icon from 'react-native-vector-icons/Entypo';
 import colors from '../../assets/theme/colors';
+import ImagePicker from '../common/ImagePicker';
 
 const CreateContactComponent = ({
   onChangeText,
@@ -23,14 +25,25 @@ const CreateContactComponent = ({
   loading,
   fetchError,
   toggleValueChange,
+  sheetRef,
+  openSheet,
+  closeSheet,
+  onSelectImage,
+  localFile,
 }) => {
   // const navigation = useNavigation();
+  console.log('localFile', localFile);
   return (
     <View style={styles.container}>
-      <View style={styles.avatar}>
-        <Icon name="user" size={80} />
-      </View>
-      <TouchableOpacity>
+      {localFile?.path ? (
+        <Image width={120} height={120} source={{uri: localFile?.path}} />
+      ) : (
+        <View style={styles.avatar}>
+          <Icon name="user" size={80} />
+        </View>
+      )}
+
+      <TouchableOpacity onPress={openSheet}>
         <Text style={styles.chooseText}>Choose Image</Text>
       </TouchableOpacity>
 
@@ -95,6 +108,7 @@ const CreateContactComponent = ({
         />
         {/* <Button title="To Contacts List" onPress={() => navigation.goBack()} /> */}
       </Container>
+      <ImagePicker onSelectImage={onSelectImage} ref={sheetRef} />
     </View>
   );
 };
@@ -131,6 +145,12 @@ const styles = StyleSheet.create({
   },
   textFavorite: {
     fontSize: 17,
+  },
+  imageView: {
+    width: 120,
+    height: 120,
+    borderRadius: 100,
+    alignSelf: 'center',
   },
 });
 

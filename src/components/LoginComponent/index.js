@@ -63,7 +63,7 @@ const LoginComponent = ({
         <View>
           <Button
             title={loading ? 'Signing In' : 'Sign In'}
-            disabled={!canSave}
+            disabled={!canSave || loading}
             onPress={onSubmit}
           />
         </View>

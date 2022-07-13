@@ -78,7 +78,7 @@ const ContactComponent = ({
               data={data}
               ListEmptyComponent={!loading && ListEmptyComponent}
               renderItem={renderItem}
-              keyExtractor={item => String(item.id)}
+              keyExtractor={item => String(item?.id)}
               ListFooterComponent={<View style={{height: 150}} />}
               ItemSeparatorComponent={() => (
                 <View style={{height: 0.3, backgroundColor: colors.grey}} />

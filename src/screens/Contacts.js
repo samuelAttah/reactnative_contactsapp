@@ -6,7 +6,7 @@ import {GlobalContext} from '../context/Provider';
 // import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Contacts = ({navigation}) => {
-  const {params} = useRoute();
+  const route = useRoute();
   const effectRan = useRef(false);
   const [modalVisible, setModalVisible] = useState(false);
   const {
@@ -23,7 +23,7 @@ const Contacts = ({navigation}) => {
     //     effectRan.current = true;
     //   };
     // }
-  }, [params?.data]);
+  }, [route.params?.data]);
 
   return (
     <>
