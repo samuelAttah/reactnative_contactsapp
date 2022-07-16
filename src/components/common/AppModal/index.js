@@ -2,6 +2,7 @@ import {View, Text, Modal, TouchableOpacity, ScrollView} from 'react-native';
 import React from 'react';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/EvilIcons';
+import Proptypes from 'prop-types';
 
 const AppModal = ({
   modalVisible,
@@ -61,5 +62,11 @@ const AppModal = ({
       </TouchableOpacity>
     </Modal>
   );
+};
+AppModal.propTypes = {
+  closeOnTouchOutside: Proptypes.bool,
+};
+AppModal.defaultProps = {
+  closeOnTouchOutside: true,
 };
 export default AppModal;

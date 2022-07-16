@@ -1,5 +1,6 @@
 // import {useFocusEffect} from '@react-navigation/native';
-import {useRoute} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useFocusEffect, useRoute} from '@react-navigation/native';
 import React, {useContext, useEffect, useState, useRef} from 'react';
 import ContactComponent from '../components/ContactComponent';
 import {GlobalContext} from '../context/Provider';
@@ -9,6 +10,8 @@ const Contacts = ({navigation}) => {
   const route = useRoute();
   const effectRan = useRef(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [sortBy, setSortBy] = React.useState(null);
+
   const {
     fetchContacts,
     contactState: {data, loading},
@@ -16,14 +19,24 @@ const Contacts = ({navigation}) => {
 
   useEffect(() => {
     fetchContacts();
-    // if (effectRan.current === false) {
-    //   fetchContacts();
-
-    //   return () => {
-    //     effectRan.current = true;
-    //   };
-    // }
   }, [route.params?.data]);
+
+  const getSettings = async () => {
+    const sortPref = await AsyncStorage.getItem('sortBy');
+    if (sortPref) {
+      setSortBy(sortPref);
+    } else {
+      setSortBy(null);
+    }
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getSettings();
+
+      return () => {};
+    }, []),
+  );
 
   return (
     <>
@@ -32,6 +45,7 @@ const Contacts = ({navigation}) => {
         setModalVisible={setModalVisible}
         data={data}
         loading={loading}
+        sortBy={sortBy}
       />
     </>
   );

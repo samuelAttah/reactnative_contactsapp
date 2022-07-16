@@ -1,12 +1,17 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useContext, useState} from 'react';
 import {useRef} from 'react';
 
 import CreateContactComponent from '../components/CreateContactComponent';
 import {GlobalContext} from '../context/Provider';
+import uploadImage from '../helpers/uploadImage';
 
 const CreateContact = ({navigation}) => {
   const [form, setForm] = useState({});
   const [localFile, setLocalFile] = useState(null);
+  const [redirect, setRedirect] = useState(false);
+  const [uploading, setIsUploading] = useState(false);
+  const [username, setUsername] = useState(null);
 
   const {firstName, lastName, phoneNumber} = form;
   const {
@@ -23,7 +28,9 @@ const CreateContact = ({navigation}) => {
       sheetRef.current.close();
     }
   };
-  const openSheet = () => {
+  const openSheet = async () => {
+    const user = await AsyncStorage.getItem('user');
+    setUsername(JSON.parse(user).username);
     if (sheetRef.current) {
       sheetRef.current.open();
     }
@@ -44,12 +51,41 @@ const CreateContact = ({navigation}) => {
   const onSubmit = async () => {
     //do something
     try {
-      await createContactAction(form);
-      console.log('data', data);
-      if (data) {
-        navigation.navigate('Home', {data: data});
+      if (localFile?.size) {
+        setIsUploading(true);
+        uploadImage(
+          username,
+          localFile,
+        )(async url => {
+          console.log('username', username);
+          console.log('url', url);
+          setIsUploading(false);
+          await createContactAction({...form, contactPicture: url})(() => {
+            setRedirect(true);
+            setTimeout(() => navigation.navigate('Home', {data: data}), 3000);
+          });
+          // if (data) {
+          //   setRedirect(true);
+          //   setTimeout(() => navigation.navigate('Home', {data: data}), 3000);
+          // }
+        })(error => {
+          console.error(error);
+          setIsUploading(false);
+        });
+      } else {
+        await createContactAction(form)(() => {
+          setRedirect(true);
+          setTimeout(() => navigation.navigate('Home', {data: data}), 3000);
+        });
+        // console.log('data', data);
+        // if (data) {
+        //   setRedirect(true);
+        //   setTimeout(() => navigation.navigate('Home', {data: data}), 3000);
+        // }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log('error', error);
+    }
   };
 
   return (
@@ -59,7 +95,7 @@ const CreateContact = ({navigation}) => {
       canSave={canSave}
       onSubmit={onSubmit}
       setForm={setForm}
-      loading={loading}
+      loading={loading || uploading}
       fetchError={fetchError}
       toggleValueChange={toggleValueChange}
       navigation={navigation}
@@ -68,6 +104,7 @@ const CreateContact = ({navigation}) => {
       openSheet={openSheet}
       onSelectImage={onSelectImage}
       localFile={localFile}
+      redirect={redirect}
     />
   );
 };

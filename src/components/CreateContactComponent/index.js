@@ -30,24 +30,30 @@ const CreateContactComponent = ({
   closeSheet,
   onSelectImage,
   localFile,
+  redirect,
 }) => {
   // const navigation = useNavigation();
   console.log('localFile', localFile);
   return (
     <View style={styles.container}>
-      {localFile?.path ? (
-        <Image width={120} height={120} source={{uri: localFile?.path}} />
-      ) : (
-        <View style={styles.avatar}>
-          <Icon name="user" size={80} />
-        </View>
-      )}
-
-      <TouchableOpacity onPress={openSheet}>
-        <Text style={styles.chooseText}>Choose Image</Text>
-      </TouchableOpacity>
-
       <Container>
+        {localFile?.path ? (
+          <Image
+            width={150}
+            height={150}
+            source={{uri: localFile?.path}}
+            style={styles.imageView}
+          />
+        ) : (
+          <View style={styles.avatar}>
+            <Icon name="user" size={100} />
+          </View>
+        )}
+
+        <TouchableOpacity onPress={openSheet}>
+          <Text style={styles.chooseText}>Choose Image</Text>
+        </TouchableOpacity>
+
         <Input
           label="First Name"
           placeholder="Enter First Name"
@@ -74,7 +80,7 @@ const CreateContactComponent = ({
           }}
           icon={
             <CountryPicker
-              countryCode={form.countryCode || undefined}
+              countryCode={form.countryCode || 'NG'}
               withFilter
               withFlag
               withCountryNameButton={false}
@@ -102,9 +108,11 @@ const CreateContactComponent = ({
           />
         </View>
         <Button
-          title={loading ? 'Submitting...' : 'Submit'}
+          title={
+            loading ? 'Submitting...' : redirect ? 'Redirecting...' : 'Submit'
+          }
           onPress={onSubmit}
-          disabled={!canSave || loading}
+          disabled={!canSave || redirect || loading}
         />
         {/* <Button title="To Contacts List" onPress={() => navigation.goBack()} /> */}
       </Container>
@@ -120,19 +128,20 @@ const styles = StyleSheet.create({
   },
   avatar: {
     backgroundColor: colors.grey,
-    paddingVertical: 10,
     borderRadius: 100,
     alignItems: 'center',
-    width: 120,
-    height: 120,
+    width: 150,
+    height: 150,
     alignSelf: 'center',
     justifyContent: 'center',
-    marginVertical: 20,
+    marginTop: 15,
   },
   chooseText: {
     textAlign: 'center',
     color: colors.accent,
     fontWeight: 'bold',
+    marginBottom: 10,
+    fontSize: 15,
   },
   phoneInput: {
     paddingLeft: 10,
@@ -147,8 +156,8 @@ const styles = StyleSheet.create({
     fontSize: 17,
   },
   imageView: {
-    width: 120,
-    height: 120,
+    width: 150,
+    height: 150,
     borderRadius: 100,
     alignSelf: 'center',
   },

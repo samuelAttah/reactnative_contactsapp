@@ -8,7 +8,6 @@ import {
   Image,
 } from 'react-native';
 import React from 'react';
-import AppModal from '../common/AppModal';
 import colors from '../../assets/theme/colors';
 import Icon from 'react-native-vector-icons/Entypo';
 import {useNavigation} from '@react-navigation/native';
@@ -49,24 +48,11 @@ const renderItem = ({item}) => {
   );
 };
 
-const ContactComponent = ({
-  modalVisible,
-  setModalVisible,
-  data,
-  loading,
-  fetchError,
-}) => {
+const ContactComponent = ({data, loading, fetchError, sortBy}) => {
   const navigation = useNavigation();
   return (
     <>
       <View style={{backgroundColor: colors.white}}>
-        <AppModal
-          setModalVisible={setModalVisible}
-          modalVisible={modalVisible}
-          modalFooter={<></>}
-          modalBody={<View />}
-          title="my profile"
-        />
         {loading && (
           <View style={styles.emptyComponent}>
             <ActivityIndicator size="large" color={colors.primary} />
@@ -75,7 +61,29 @@ const ContactComponent = ({
         {!loading && (
           <View style={[{paddingVertical: 20}]}>
             <FlatList
-              data={data}
+              data={
+                data
+                  ? data.sort((a, b) => {
+                      if (sortBy === 'First Name') {
+                        if (b.first_name > a.first_name) {
+                          return -1;
+                        } else {
+                          return 1;
+                        }
+                      }
+                      if (sortBy === 'Last Name') {
+                        if (b.last_name > a.last_name) {
+                          return -1;
+                        } else {
+                          return 1;
+                        }
+                      }
+                      if (sortBy === null) {
+                        return data;
+                      }
+                    })
+                  : null
+              }
               ListEmptyComponent={!loading && ListEmptyComponent}
               renderItem={renderItem}
               keyExtractor={item => String(item?.id)}

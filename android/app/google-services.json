@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "893480635253",
+    "project_id": "contactsapp-1fee7",
+    "storage_bucket": "contactsapp-1fee7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:893480635253:android:4b0c0e56d94c7c3e3f613c",
+        "android_client_info": {
+          "package_name": "com.sam.contactsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "893480635253-dcp388v92d4v35dqshpaif64ohpg0scs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sam.contactsapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "893480635253-kfpv2ov69l01gcevnpvb7rhffkq3q0ap.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADO9AULrGr4sDvt1_cYeYJHurvf7AdkIU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "893480635253-kfpv2ov69l01gcevnpvb7rhffkq3q0ap.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

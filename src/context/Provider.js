@@ -112,9 +112,9 @@ const GlobalProvider = ({children}) => {
   };
 
   //CREATE CONTACTS ACTIONS
-  const createContactAction = form => {
+  const createContactAction = form => onSuccess => {
     const requestPayLoad = {
-      country_code: form.phoneCode || '',
+      country_code: form.phoneCode || '234',
       first_name: form.firstName || '',
       last_name: form.lastName || '',
       phone_number: form.phoneNumber || '',
@@ -125,6 +125,7 @@ const GlobalProvider = ({children}) => {
     try {
       const response = axiosInstance.post('/contacts/', requestPayLoad);
       contactDispatch({type: CREATE_CONTACT_SUCCESS, payLoad: response.data});
+      onSuccess();
     } catch (error) {
       contactDispatch({
         type: CREATE_CONTACT_FAIL,
