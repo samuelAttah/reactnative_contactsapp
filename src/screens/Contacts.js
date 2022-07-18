@@ -7,7 +7,7 @@ import {GlobalContext} from '../context/Provider';
 // import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Contacts = ({navigation}) => {
-  const route = useRoute();
+  const {params} = useRoute();
   const effectRan = useRef(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [sortBy, setSortBy] = React.useState(null);
@@ -19,7 +19,7 @@ const Contacts = ({navigation}) => {
 
   useEffect(() => {
     fetchContacts();
-  }, [route.params?.data]);
+  }, [params?.data]);
 
   const getSettings = async () => {
     const sortPref = await AsyncStorage.getItem('sortBy');

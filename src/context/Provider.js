@@ -18,6 +18,9 @@ import {
   CREATE_CONTACT_LOADING,
   CREATE_CONTACT_SUCCESS,
   CREATE_CONTACT_FAIL,
+  DELETE_CONTACT_LOADING,
+  DELETE_CONTACT_SUCCESS,
+  DELETE_CONTACT_FAIL,
 } from '../constants/actionTypes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axiosInstance from '../helpers/axiosInstance';
@@ -111,7 +114,7 @@ const GlobalProvider = ({children}) => {
     }
   };
 
-  //CREATE CONTACTS ACTIONS
+  //CREATE CONTACT ACTIONS
   const createContactAction = form => onSuccess => {
     const requestPayLoad = {
       country_code: form.phoneCode || '234',
@@ -133,6 +136,21 @@ const GlobalProvider = ({children}) => {
       });
     }
   };
+
+  const deleteContact = id => onSuccess => {
+    contactDispatch({type: DELETE_CONTACT_LOADING});
+    try {
+      const response = axiosInstance.delete(`/contacts/${id}`);
+      console.log('response', response);
+      contactDispatch({type: DELETE_CONTACT_SUCCESS, payLoad: id});
+      onSuccess();
+    } catch (error) {
+      contactDispatch({
+        type: DELETE_CONTACT_FAIL,
+        payLoad: error.response ? error.response?.data : error.message,
+      });
+    }
+  };
   return (
     <GlobalContext.Provider
       value={{
@@ -145,6 +163,7 @@ const GlobalProvider = ({children}) => {
         doLogout,
         fetchContacts,
         createContactAction,
+        deleteContact,
       }}>
       {children}
     </GlobalContext.Provider>

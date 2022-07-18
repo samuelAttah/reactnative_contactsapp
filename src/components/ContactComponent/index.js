@@ -17,39 +17,48 @@ const ListEmptyComponent = () => (
     <Text>No Contacts to Display</Text>
   </View>
 );
-const renderItem = ({item}) => {
-  console.log('first', item);
-  const {contact_picture, first_name, last_name, phone_number, country_code} =
-    item;
-  return (
-    <TouchableOpacity style={styles.itemContainer}>
-      <View style={styles.item}>
-        {contact_picture ? (
-          <Image style={styles.profileImage} source={{uri: contact_picture}} />
-        ) : (
-          <View style={styles.noImage}>
-            <Icon name="user" size={32} />
-          </View>
-        )}
-
-        <View style={{paddingLeft: 20}}>
-          <View style={{flexDirection: 'row'}}>
-            <Text style={styles.name}>{first_name}</Text>
-            <Text style={styles.name}>{last_name}</Text>
-          </View>
-          <Text
-            style={
-              styles.phoneNumber
-            }>{`${country_code} ${phone_number}`}</Text>
-        </View>
-      </View>
-      <Icon name="chevron-right" size={18} color={colors.grey} />
-    </TouchableOpacity>
-  );
-};
 
 const ContactComponent = ({data, loading, fetchError, sortBy}) => {
   const navigation = useNavigation();
+
+  const renderItem = ({item}) => {
+    console.log('first', item);
+    const {contact_picture, first_name, last_name, phone_number, country_code} =
+      item;
+    return (
+      <TouchableOpacity
+        style={styles.itemContainer}
+        onPress={() => {
+          navigation.navigate('Details', {item});
+        }}>
+        <View style={styles.item}>
+          {contact_picture ? (
+            <Image
+              style={styles.profileImage}
+              source={{uri: contact_picture}}
+            />
+          ) : (
+            <View style={styles.noImage}>
+              <Icon name="user" size={32} />
+            </View>
+          )}
+
+          <View style={{paddingLeft: 20}}>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={styles.name}>{first_name}</Text>
+              <Text style={styles.name}>{last_name}</Text>
+            </View>
+            <Text
+              style={
+                styles.phoneNumber
+              }>{`${country_code} ${phone_number}`}</Text>
+          </View>
+        </View>
+        <Icon name="chevron-right" size={18} color={colors.grey} />
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <>
       <View style={{backgroundColor: colors.white}}>

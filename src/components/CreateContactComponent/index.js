@@ -109,7 +109,7 @@ const CreateContactComponent = ({
         </View>
         <Button
           title={
-            loading ? 'Submitting...' : redirect ? 'Redirecting...' : 'Submit'
+            loading ? 'Submitting...' : redirect ? 'Please Wait...' : 'Submit'
           }
           onPress={onSubmit}
           disabled={!canSave || redirect || loading}
