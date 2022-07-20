@@ -18,6 +18,9 @@ import {
   CREATE_CONTACT_LOADING,
   CREATE_CONTACT_SUCCESS,
   CREATE_CONTACT_FAIL,
+  EDIT_CONTACT_LOADING,
+  EDIT_CONTACT_SUCCESS,
+  EDIT_CONTACT_FAIL,
   DELETE_CONTACT_LOADING,
   DELETE_CONTACT_SUCCESS,
   DELETE_CONTACT_FAIL,
@@ -137,6 +140,28 @@ const GlobalProvider = ({children}) => {
     }
   };
 
+  const editContactAction = (form, id) => onSuccess => {
+    const requestPayLoad = {
+      country_code: form.phoneCode || '234',
+      first_name: form.firstName,
+      last_name: form.lastName,
+      phone_number: form.phoneNumber,
+      contact_picture: form.contactPicture,
+      is_favorite: form.isFavorite || false,
+    };
+    contactDispatch({type: EDIT_CONTACT_LOADING});
+    try {
+      const response = axiosInstance.put(`/contacts/${id}`, requestPayLoad);
+      contactDispatch({type: EDIT_CONTACT_SUCCESS, payLoad: response.data});
+      onSuccess();
+    } catch (error) {
+      contactDispatch({
+        type: EDIT_CONTACT_FAIL,
+        payLoad: error.response ? error.response.data : error.message,
+      });
+    }
+  };
+
   const deleteContact = id => onSuccess => {
     contactDispatch({type: DELETE_CONTACT_LOADING});
     try {
@@ -151,6 +176,7 @@ const GlobalProvider = ({children}) => {
       });
     }
   };
+
   return (
     <GlobalContext.Provider
       value={{
@@ -164,6 +190,7 @@ const GlobalProvider = ({children}) => {
         fetchContacts,
         createContactAction,
         deleteContact,
+        editContactAction,
       }}>
       {children}
     </GlobalContext.Provider>

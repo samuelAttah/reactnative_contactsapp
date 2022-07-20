@@ -45,7 +45,9 @@ const CreateContact = ({navigation}) => {
   };
 
   const toggleValueChange = () => {
-    setForm({...form, isFavorite: !form.isFavorite});
+    setForm(prev => {
+      return {...prev, isFavorite: !form.isFavorite};
+    });
   };
 
   const onSubmit = async () => {
@@ -64,25 +66,20 @@ const CreateContact = ({navigation}) => {
             setRedirect(true);
             setTimeout(() => navigation.navigate('Home', {data: data}), 3000);
           });
-          // if (data) {
-          //   setRedirect(true);
-          //   setTimeout(() => navigation.navigate('Home', {data: data}), 3000);
-          // }
         })(error => {
           console.error(error);
           setIsUploading(false);
         });
-      } else {
-        await createContactAction(form)(() => {
-          setRedirect(true);
-          setTimeout(() => navigation.navigate('Home', {data: data}), 3000);
-        });
-        // console.log('data', data);
-        // if (data) {
-        //   setRedirect(true);
-        //   setTimeout(() => navigation.navigate('Home', {data: data}), 3000);
-        // }
       }
+      await createContactAction(form)(() => {
+        setRedirect(true);
+        setTimeout(() => navigation.navigate('Home', {data: data}), 4000);
+      });
+      // console.log('data', data);
+      // if (data) {
+      //   setRedirect(true);
+      //   setTimeout(() => navigation.navigate('Home', {data: data}), 3000);
+      // }
     } catch (error) {
       console.log('error', error);
     }

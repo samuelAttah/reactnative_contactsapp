@@ -5,6 +5,7 @@ import ContactDetails from '../screens/ContactDetails';
 import Settings from '../screens/Settings';
 import CreateContact from '../screens/CreateContact';
 import Logout from '../screens/Logout';
+import EditContact from '../screens/EditContact';
 
 const HomeStack = createNativeStackNavigator();
 const HomeNavigator = () => {
@@ -44,6 +45,7 @@ const HomeNavigator = () => {
         options={{headerShown: true}}
       />
       <HomeStack.Screen name="Create" component={CreateContact} />
+      <HomeStack.Screen name="Edit" component={EditContact} />
       <HomeStack.Screen name="Logout" component={Logout} />
     </HomeStack.Navigator>
   );

@@ -8,6 +8,9 @@ import {
   DELETE_CONTACT_LOADING,
   DELETE_CONTACT_SUCCESS,
   DELETE_CONTACT_FAIL,
+  EDIT_CONTACT_LOADING,
+  EDIT_CONTACT_SUCCESS,
+  EDIT_CONTACT_FAIL,
 } from '../../constants/actionTypes';
 
 const contactReducer = (state, action) => {
@@ -21,8 +24,21 @@ const contactReducer = (state, action) => {
     case CREATE_CONTACT_LOADING:
       return {...state, loading: true};
     case CREATE_CONTACT_SUCCESS:
-      return {...state, loading: false, data: [action.payLoad, ...state.data]};
+      return {...state, loading: false, data: action.payLoad};
     case CREATE_CONTACT_FAIL:
+      return {...state, loading: false, data: null, fetchError: action.payLoad};
+    case EDIT_CONTACT_LOADING:
+      return {...state, loading: true};
+    case EDIT_CONTACT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        data: action.payLoad,
+        // data: state.data.map(contact =>
+        //   contact.id === action.payLoad.id ? action.payLoad : contact,
+        // ),
+      };
+    case EDIT_CONTACT_FAIL:
       return {...state, loading: false, data: null, fetchError: action.payLoad};
     case DELETE_CONTACT_LOADING:
       return {...state, loading: true, fetchError: null};
@@ -30,7 +46,7 @@ const contactReducer = (state, action) => {
       return {
         ...state,
         loading: false,
-        data: state.data.filter(item => item.id !== action.payLoad),
+        data: state.data.filter(contact => contact.id !== action.payLoad),
       };
     case DELETE_CONTACT_FAIL:
       return {...state, loading: false, data: null, fetchError: action.payLoad};

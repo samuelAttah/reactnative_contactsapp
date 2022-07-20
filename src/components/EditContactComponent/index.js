@@ -17,7 +17,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 import colors from '../../assets/theme/colors';
 import ImagePicker from '../common/ImagePicker';
 
-const CreateContactComponent = ({
+const EditContactComponent = ({
   onChangeText,
   form,
   onSubmit,
@@ -38,7 +38,7 @@ const CreateContactComponent = ({
   console.log('localFile', localFile);
   return (
     <View style={styles.container}>
-      {/* {isLoading && <ActivityIndicator size="large" color={colors.primary} />} */}
+      {isLoading && <ActivityIndicator size="large" color={colors.primary} />}
       <Container>
         {localFile ? (
           <Image
@@ -86,7 +86,7 @@ const CreateContactComponent = ({
           }}
           icon={
             <CountryPicker
-              countryCode={form.countryCode || 'NG'}
+              countryCode={form.countryCode}
               withFilter
               withFlag
               withCountryNameButton={false}
@@ -169,4 +169,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateContactComponent;
+export default EditContactComponent;

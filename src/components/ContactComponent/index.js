@@ -23,8 +23,7 @@ const ContactComponent = ({data, loading, fetchError, sortBy}) => {
 
   const renderItem = ({item}) => {
     console.log('first', item);
-    const {contact_picture, first_name, last_name, phone_number, country_code} =
-      item;
+    const {first_name, last_name, phone_number, country_code} = item;
     return (
       <TouchableOpacity
         style={styles.itemContainer}
@@ -32,10 +31,10 @@ const ContactComponent = ({data, loading, fetchError, sortBy}) => {
           navigation.navigate('Details', {item});
         }}>
         <View style={styles.item}>
-          {contact_picture ? (
+          {item?.contact_picture ? (
             <Image
               style={styles.profileImage}
-              source={{uri: contact_picture}}
+              source={{uri: item?.contact_picture}}
             />
           ) : (
             <View style={styles.noImage}>
