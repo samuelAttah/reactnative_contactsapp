@@ -52,8 +52,8 @@ const ContactDetailsComponent = ({
                 style={{
                   backgroundColor: colors.grey,
                   height: 250,
-                  width: '60%',
-                  borderRadius: 100,
+                  width: 250,
+                  borderRadius: 150,
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
@@ -123,7 +123,7 @@ const ContactDetailsComponent = ({
             <Button
               title="Edit Contact"
               onPress={() => {
-                navigation.navigate('Edit', {contact, editing: true});
+                navigation.navigate('Edit', {contact});
               }}
             />
           </View>

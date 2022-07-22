@@ -70,11 +70,12 @@ const CreateContact = ({navigation}) => {
           console.error(error);
           setIsUploading(false);
         });
+      } else {
+        await createContactAction(form)(() => {
+          setRedirect(true);
+          setTimeout(() => navigation.navigate('Home', {data: data}), 4000);
+        });
       }
-      await createContactAction(form)(() => {
-        setRedirect(true);
-        setTimeout(() => navigation.navigate('Home', {data: data}), 4000);
-      });
       // console.log('data', data);
       // if (data) {
       //   setRedirect(true);
